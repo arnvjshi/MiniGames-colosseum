@@ -2,7 +2,7 @@
 
 A retro-styled game portal built with vanilla HTML, CSS, and JavaScript. Features an 8-bit design with CRT effects and game previews.
 
-![Retro Game Portal](/api/placeholder/800/400)
+![Retro Game Portal](https://arnvjshi.github.io/MiniGames-colosseum/)
 
 ## ✨ Features
 
