@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colosseum 15.0</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(0, 0, 0, 0.2) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 1000;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 
+                2px 2px 0 #ff0080,
+                4px 4px 0 #00ff00;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #0f0;
+            font-size: 1rem;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background: #111;
+            border: 4px solid #0f0;
+            padding: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #0f0;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid #ff00ff;
+            margin-bottom: 1rem;
+        }
+
+        .game-card h3 {
+            color: #ff0;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-card p {
+            color: #0f0;
+            font-size: 0.7rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #111;
+            border: 4px solid #0f0;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            color: #ff0;
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #f00;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .game-frame {
+            width: 100%;
+            height: 500px;
+            border: 2px solid #ff00ff;
+            margin-bottom: 1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            font-family: 'Press Start 2P', cursive;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .play-btn {
+            background: #0f0;
+            color: #000;
+        }
+
+        .close-modal-btn {
+            background: #f00;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.5rem;
+            }
+            .subtitle {
+                font-size: 0.8rem;
+            }
+            .games-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    
+    <header>
+        <h1 class="title">COLOSSEUM 15.0</h1>
+        <p class="subtitle">MiniGames</p>
+    </header>
+
+    <div class="games-grid" id="gamesGrid"></div>
+
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <iframe class="game-frame" id="gameFrame" frameborder="0"></iframe>
+            <div class="modal-buttons">
+                <button class="modal-btn play-btn" id="playFullscreen">PLAY FULL SCREEN</button>
+                <button class="modal-btn close-modal-btn">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const games = [
+            {
+                title: "The Impossible Quiz",
+                url: "impossible-quiz.html",
+                description: "Get a taste of nonsense"
+            },
+            {
+                title: "Coding Quiz",
+                url: "coding-quiz.html",
+                description: "Classic coding questions"
+            },
+            {
+                title: "Memory Cards",
+                url: "memory-game.html",
+                description: "Think before you play"
+            },
+            {
+                title: "Snake",
+                url: "https://googlesnakegame.com/",
+                image: "/api/placeholder/300/200",
+                description: "Grow longer, don't crash"
+            },
+            {
+                title: "2048",
+                url: "https://2048game.com",
+                image: "/api/placeholder/300/200",
+                description: "Merge numbers, reach 2048"
+            },
+            {
+                title: "Minesweeper",
+                url: "https://minesweeper.com",
+                image: "/api/placeholder/300/200",
+                description: "Clear the minefield"
+            }
+        ];
+
+        const gamesGrid = document.getElementById('gamesGrid');
+        const modal = document.getElementById('gameModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const gameFrame = document.getElementById('gameFrame');
+        const playFullscreen = document.getElementById('playFullscreen');
+        let currentGameUrl = '';
+
+        // Create game cards
+        games.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.innerHTML = `
+                <h3>${game.title}</h3>
+                <p>${game.description}</p>
+            `;
+            gameCard.addEventListener('click', () => openGameModal(game));
+            gamesGrid.appendChild(gameCard);
+        });
+
+        // Modal functions
+        function openGameModal(game) {
+            modal.style.display = 'block';
+            modalTitle.textContent = game.title;
+            gameFrame.src = game.url;
+            currentGameUrl = game.url;
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            gameFrame.src = '';
+        }
+
+        // Event listeners
+        document.querySelectorAll('.close-btn, .close-modal-btn').forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+
+        playFullscreen.addEventListener('click', () => {
+            window.open(currentGameUrl, '_blank');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
