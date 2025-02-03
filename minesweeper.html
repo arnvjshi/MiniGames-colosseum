@@ -172,8 +172,26 @@
             return count;
         }
 
+        function updatePoints(game, points) {
+        fetch('scoreboard.json')
+        .then(response => response.json())
+        .then(data => {
+            // Update the game's points
+            data[game] += points;
+
+            // Write updated data back to the JSON file
+            return fetch('scoreboard.json', {
+                method: 'PUT', // Use PUT/POST based on your server setup
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+        })
+        .catch(err => console.error('Error updating points:', err));
+}
+
         function updateScore() {
             document.getElementById('score').textContent = score;
+            updatePoints('minesweeper', score);
         }
 
         function getHint() {
@@ -387,6 +405,7 @@
 
         // Start the game
         window.addEventListener('load', initializeGame);
+
     </script>
 </body>
 </html>
