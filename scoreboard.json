@@ -1,10 +1,10 @@
 {
-    "coding-quiz": 0,
-    "impossible-quiz": 0,
-    "memory-game": 0,
-    "minesweeper": 0,
-    "pattern-memory-game": 0,
-    "puzzle": 0,
-    "sudoku": 0,
-    "wordscratch": 0
+  "coding-quiz": 0,
+  "impossible-quiz": 0,
+  "memory-game": 0,
+  "minesweeper": 535,
+  "pattern-memory-game": 0,
+  "puzzle": 0,
+  "sudoku": 0,
+  "wordscratch": 0
 }

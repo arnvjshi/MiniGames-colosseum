@@ -171,27 +171,28 @@
             }
             return count;
         }
-
-        function updatePoints(game, points) {
-        fetch('scoreboard.json')
-        .then(response => response.json())
-        .then(data => {
-            // Update the game's points
-            data[game] += points;
-
-            // Write updated data back to the JSON file
-            return fetch('scoreboard.json', {
-                method: 'PUT', // Use PUT/POST based on your server setup
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-        })
-        .catch(err => console.error('Error updating points:', err));
+        // Submit the score to the backend
+        function submitScore(game, score) {
+    fetch(`/api/scores/${game}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ score })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
+
+
 
         function updateScore() {
             document.getElementById('score').textContent = score;
-            updatePoints('minesweeper', score);
         }
 
         function getHint() {
@@ -233,6 +234,7 @@
             if (won) {
                 gameOverTitle.textContent = "You Won!";
                 gameOverMessage.textContent = `Congratulations! You found all the mines!`;
+                submitScore('minesweeper',score);
                 gameOverTitle.className = 'win-message';
                 penaltyMessage.style.display = 'none';
             } else {
@@ -240,6 +242,7 @@
                 gameOverMessage.textContent = "Better luck next time!";
                 gameOverTitle.className = 'lose-message';
                 penaltyMessage.textContent = `Retry will cost ${RETRY_PENALTY} points`;
+                submitScore('minesweeper',-200);
                 penaltyMessage.style.display = 'block';
             }
 
