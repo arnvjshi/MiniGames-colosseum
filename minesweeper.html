@@ -400,10 +400,14 @@
         function initializeGame() {
             createGrid();
             document.getElementById('hint').addEventListener('click', getHint);
-            document.getElementById('retryButton').addEventListener('click', () => {
-                score = Math.max(0, score - RETRY_PENALTY);
-                location.reload();
-            });
+            // Add this to your game over section
+    document.getElementById('retryButton').addEventListener('click', () => {
+        score = 0; // Reset the score to zero
+        updateScore(); // Update the UI with the new score
+        submitScore('minesweeper', score); // Optionally, update the backend if you want to reset it in the scoreboard
+        location.reload(); // Reload the page to restart the game
+    });
+
         }
 
         // Start the game
