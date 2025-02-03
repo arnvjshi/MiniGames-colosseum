@@ -1,36 +1,68 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
+
 const app = express();
+const PORT = 3000;
+
+// Path to the scoreboard JSON file
+const SCOREBOARD_FILE = path.join(__dirname, 'scoreboard.json');
+
+// Middleware to parse JSON request bodies
 app.use(express.json());
 
-const scoreboardPath = './scoreboard.json';
+// Serve static files (e.g., HTML, CSS, JS)
+app.use(express.static(path.join(__dirname)));
 
-// Endpoint to get scores
-app.get('/scores', (req, res) => {
-    fs.readFile(scoreboardPath, (err, data) => {
-        if (err) return res.status(500).send('Error reading scores');
+// Route to serve index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// API to fetch the scoreboard
+app.get('/api/scoreboard', (req, res) => {
+    fs.readFile(SCOREBOARD_FILE, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading scoreboard file:', err);
+            return res.status(500).json({ error: 'Unable to read scoreboard' });
+        }
         res.json(JSON.parse(data));
     });
 });
 
-// Endpoint to update scores
-app.post('/scores', (req, res) => {
+// API to update the scoreboard
+app.post('/api/scoreboard', (req, res) => {
     const { game, points } = req.body;
 
-    fs.readFile(scoreboardPath, (err, data) => {
-        if (err) return res.status(500).send('Error reading scores');
+    if (!game || typeof points !== 'number') {
+        return res.status(400).json({ error: 'Invalid input' });
+    }
 
-        const scores = JSON.parse(data);
-        if (scores[game] !== undefined) {
-            scores[game] += points;
-            fs.writeFile(scoreboardPath, JSON.stringify(scores, null, 2), err => {
-                if (err) return res.status(500).send('Error updating scores');
-                res.send('Scores updated');
-            });
-        } else {
-            res.status(400).send('Invalid game');
+    fs.readFile(SCOREBOARD_FILE, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading scoreboard file:', err);
+            return res.status(500).json({ error: 'Unable to read scoreboard' });
         }
+
+        const scoreboard = JSON.parse(data);
+
+        if (scoreboard[game] === undefined) {
+            return res.status(400).json({ error: 'Game not found in scoreboard' });
+        }
+
+        scoreboard[game] += points;
+
+        fs.writeFile(SCOREBOARD_FILE, JSON.stringify(scoreboard, null, 2), (err) => {
+            if (err) {
+                console.error('Error writing to scoreboard file:', err);
+                return res.status(500).json({ error: 'Unable to update scoreboard' });
+            }
+            res.json({ message: 'Score updated successfully', scoreboard });
+        });
     });
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});

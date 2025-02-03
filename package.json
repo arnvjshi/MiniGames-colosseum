@@ -1,0 +1,17 @@
+{
+  "name": "minigames-colosseum",
+  "version": "1.0.0",
+  "description": "A retro-styled game portal built with vanilla HTML, CSS, and JavaScript. Features an 8-bit design with CRT effects and game previews.",
+  "main": "backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "app": "node backend.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "requirements": "^2.0.2"
+  }
+}
