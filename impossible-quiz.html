@@ -136,6 +136,9 @@
     </div>
 
     <script>
+        function updateGameData(GameScore,score) {
+            localStorage.setItem('ImpossibleQuiz', score);
+        }
         const questions = [
             {
                 question: "WHAT IS 2 + 2?",
@@ -268,6 +271,7 @@
 
         function updateScoreDisplay() {
             document.getElementById('score').innerHTML = `SCORE: ${score}`;
+            updateGameData('ImpossibleQuiz', score);
         }
 
         function startTimer() {

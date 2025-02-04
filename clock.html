@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjustable Clock</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        display: flex;
+        font-family: 'Press Start 2P',cursive;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+    
+    .clock {
+        position: relative;
+        width: 210px;
+        height: 210px;
+        border: 15px solid black;
+        border-radius: 50%;
+        transform: rotate(-90deg);
+    }
+    
+    .hand {
+        position: absolute;
+        width: 50%;
+        height: 2px;
+        background-color: black;
+        top: 50%;
+        left: 50%;
+        transform-origin: 0% 50%;
+        transition: transform 0.5s ease;
+    }
+    
+    .hour-hand {
+        background-color: red;
+        width: 40%;
+        height: 4px;
+    }
+    
+    .minute-hand {
+        width: 50%;
+    }
+    
+    .number {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        font-size: 1em;
+        top: 50%;
+        left: 50%;
+        transform-origin: center;
+        transform: translate(-50%, -50%) rotate(var(--rotate)) translate(85px) rotate(-90deg);
+    }
+    
+    .number:nth-child(3) { --rotate: 0deg; }
+    .number:nth-child(4) { --rotate: 30deg; }
+    .number:nth-child(5) { --rotate: 60deg; }
+    .number:nth-child(6) { --rotate: 90deg; }
+    .number:nth-child(7) { --rotate: 120deg; }
+    .number:nth-child(8) { --rotate: 150deg; }
+    .number:nth-child(9) { --rotate: 180deg; }
+    .number:nth-child(10) { --rotate: 210deg; }
+    .number:nth-child(11) { --rotate: 240deg; }
+    .number:nth-child(12) { --rotate: 270deg; }
+    .number:nth-child(13) { --rotate: 300deg; }
+    .number:nth-child(14) { --rotate: 330deg; }
+    
+    #time-display {
+        margin-top: 20px;
+        font-size: 1.5em;
+    }
+    
+    #message {
+        margin-top: 10px;
+        font-size: 1.2em;
+        color: green;
+    } 
+</style>
+<body>
+    <div class="clock">
+        <div class="hand hour-hand" id="hour-hand"></div>
+        <div class="hand minute-hand" id="minute-hand"></div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(0deg) translate(90px) rotate(90deg);">12</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(30deg) translate(90px) rotate(80deg);">1</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(60deg) translate(90px) rotate(80deg);">2</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(90deg) translate(90px) rotate(0deg);">3</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(120deg) translate(90px) rotate(-80deg);">4</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(150deg) translate(90px) rotate(-80deg);">5</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(180deg) translate(90px) rotate(-100deg);">6</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(210deg) translate(90px) rotate(-90deg);">7</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(240deg) translate(90px) rotate(-80deg);">8</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(270deg) translate(90px) rotate(180deg);">9</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(300deg) translate(90px) rotate(-250deg);">10</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(330deg) translate(90px) rotate(-270deg);">11</div>
+    </div>
+    <div id="time-display">Time: 00:00</div>
+    <div id="message"></div>
+    <script >
+        let hourHand = document.getElementById('hour-hand');
+let minuteHand = document.getElementById('minute-hand');
+let timeDisplay = document.getElementById('time-display');
+let message = document.getElementById('message');
+
+let hourAngle = 0;
+let minuteAngle = 0;
+
+function updateTimeDisplay() {
+    let hours = Math.floor(hourAngle / 30);
+    let minutes = Math.floor(minuteAngle / 6);
+    timeDisplay.textContent = `Time: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+}
+
+function checkCorrectTime() {
+    if (hourAngle === 270 && minuteAngle === 150) {
+        message.textContent = "Congrats! Correct answer.";
+        
+        hourHand.removeEventListener('click', rotateHourHand);
+        minuteHand.removeEventListener('click', rotateMinuteHand);
+    } else {
+        message.textContent = "";
+    }
+}
+
+function rotateHand(hand, angle) {
+    hand.style.transform = `rotate(${angle}deg)`;
+}
+
+function rotateHourHand() {
+    hourAngle = (hourAngle + 30) % 360;
+    rotateHand(hourHand, hourAngle);
+    updateTimeDisplay();
+    checkCorrectTime();
+}
+
+function rotateMinuteHand() {
+    minuteAngle = (minuteAngle + 30) % 360;
+    rotateHand(minuteHand, minuteAngle);
+    updateTimeDisplay();
+    checkCorrectTime();
+}
+
+hourHand.addEventListener('click', rotateHourHand);
+minuteHand.addEventListener('click', rotateMinuteHand);
+
+updateTimeDisplay();
+
+    </script>
+</body>
+</html> 

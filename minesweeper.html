@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Retro Minesweeper</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/press-start-2p/4.1.0/press-start-2p.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         body {
+            font-size: x-small;
             background-color: #000;
             font-family: 'Press Start 2P', cursive;
             display: flex;
@@ -142,6 +143,9 @@
     </div>
 
     <script>
+        function updateGameData(GameScore,score) {
+            localStorage.setItem('Minesweeper', score);
+        }
         // Constants
         const GRID_SIZE = 8;
         const MINE_COUNT = 10;
@@ -171,28 +175,10 @@
             }
             return count;
         }
-        // Submit the score to the backend
-        function submitScore(game, score) {
-    fetch(`/api/scores/${game}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ score })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data.message);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-
-
 
         function updateScore() {
             document.getElementById('score').textContent = score;
+            updateGameData('Minesweeper', score); // Example gameId and score
         }
 
         function getHint() {
@@ -234,15 +220,14 @@
             if (won) {
                 gameOverTitle.textContent = "You Won!";
                 gameOverMessage.textContent = `Congratulations! You found all the mines!`;
-                submitScore('minesweeper',score);
                 gameOverTitle.className = 'win-message';
                 penaltyMessage.style.display = 'none';
             } else {
                 gameOverTitle.textContent = "You Lost!";
+                updateGameData('Minesweeper', 0); // Example gameId and score
                 gameOverMessage.textContent = "Better luck next time!";
                 gameOverTitle.className = 'lose-message';
                 penaltyMessage.textContent = `Retry will cost ${RETRY_PENALTY} points`;
-                submitScore('minesweeper',-200);
                 penaltyMessage.style.display = 'block';
             }
 
@@ -404,7 +389,6 @@
     document.getElementById('retryButton').addEventListener('click', () => {
         score = 0; // Reset the score to zero
         updateScore(); // Update the UI with the new score
-        submitScore('minesweeper', score); // Optionally, update the backend if you want to reset it in the scoreboard
         location.reload(); // Reload the page to restart the game
     });
 
