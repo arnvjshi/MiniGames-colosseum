@@ -51,22 +51,9 @@
     </div>
 
     <script>
-
-function updatePoints(game, points) {
-    fetch('scoreboard.json')
-        .then(response => response.json())
-        .then(data => {
-            // Update the game's points
-            data[game] += points;
-
-            // Write updated data back to the JSON file
-            return fetch('scoreboard.json', {
-                method: 'PUT', // Use PUT/POST based on your server setup
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-        })
-        .catch(err => console.error('Error updating points:', err));
+        let GameScore=0;
+    function updateGameData(GameScore,score) {
+            localStorage.setItem('CodingQuiz', score);
     }
 
 
@@ -141,6 +128,9 @@ function updatePoints(game, points) {
 
             if (selectedIndex === questionObj.correct) {
                 resultElement.textContent = "Correct!";
+                GameScore=GameScore+100;
+                score=GameScore;
+                updateGameData('CodingQuiz', score);
                 resultElement.style.color = "green";
                 
                 setTimeout(() => {

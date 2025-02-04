@@ -219,21 +219,6 @@
     </div>
     
     <script>
-        function displayScores() {
-            fetch('scoreboard.json')
-                .then(response => response.json())
-                .then(data => {
-                    const scoresList = document.getElementById('scores-list');
-                    scoresList.innerHTML = ''; // Clear previous scores
-    
-                    for (const game in data) {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = `${game}: ${data[game]} points`;
-                        scoresList.appendChild(listItem);
-                    }
-                })
-                .catch(err => console.error('Error fetching scores:', err));
-        }
     
         // Refresh scores every 5 seconds
         setInterval(displayScores, 5000);

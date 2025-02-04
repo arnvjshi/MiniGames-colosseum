@@ -105,11 +105,17 @@
     <div id="time-display">Time: 00:00</div>
     <div id="message"></div>
     <script >
+        
+        function updateGameData(GameScore,score) {
+            localStorage.setItem('ClockHands', score);
+        }
+
         let hourHand = document.getElementById('hour-hand');
 let minuteHand = document.getElementById('minute-hand');
 let timeDisplay = document.getElementById('time-display');
 let message = document.getElementById('message');
-
+let Ans=false;
+let Gamescore=0;
 let hourAngle = 0;
 let minuteAngle = 0;
 
@@ -122,7 +128,10 @@ function updateTimeDisplay() {
 function checkCorrectTime() {
     if (hourAngle === 270 && minuteAngle === 150) {
         message.textContent = "Congrats! Correct answer.";
-        
+        Ans=true;
+        Gamescore=Gamescore+10;
+        score=Gamescore;
+        updateGameData('ClockHands', score);
         hourHand.removeEventListener('click', rotateHourHand);
         minuteHand.removeEventListener('click', rotateMinuteHand);
     } else {

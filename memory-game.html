@@ -66,8 +66,12 @@
     <div class="game-container" id="game-board"></div>
 
     <script>
+        let GameScore=0;
+        function updateGameData(GameScore,score) {
+            localStorage.setItem('MemoryGame', score);
+        }
         document.addEventListener('DOMContentLoaded', () => {
-            const emojis = ['🍄', '🌟', '👾', '🚀', '🌈'];
+            const emojis = ['🍄', '🌟', '👾', '🚀', '🌈','✨','🎹','🔪','🐛','🕚'];
             let firstCard = null;
             let moves = 0;
             let matchedPairs = 0;
@@ -109,14 +113,15 @@
                 clearInterval(timerInterval);
                 startTimer();
             }
-
+            const time=3*60;
             function startTimer() {
                 startTime = Date.now();
                 timerInterval = setInterval(updateTimer, 1000);
             }
 
             function updateTimer() {
-                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                const elapsedTime = Math.floor((Date.now() -startTime) / 1000);
+               
                 document.getElementById('timer').textContent = `Time: ${elapsedTime}s`;
             }
 
