@@ -251,3 +251,4 @@ location.reload(); // Reload the page to restart the game
 
 // Start the game
 window.addEventListener('load', initializeGame);
+export{updateGameData,initializeGame,createGrid,gameOver,checkWin,revealCell,toggleFlag};

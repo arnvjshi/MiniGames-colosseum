@@ -188,3 +188,5 @@ function initQuiz() {
 }
 
 initQuiz();
+
+export{initQuiz, loadQuestion, checkAnswer, updateGameScore, startTimer, updateStatus, getRandomQuestion, questions, gameScore, attempts, startTime, timerInterval, currentQuestion};

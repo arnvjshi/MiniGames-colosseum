@@ -90,4 +90,4 @@ let sequence = [];
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        export{startgame};
+        export{startgame,makeGuess,updateGameData,gameOver,generateSequence,playSequence,highlightCard,sleep};

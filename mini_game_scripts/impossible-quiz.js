@@ -239,3 +239,5 @@ function resetGame() {
     updateLivesDisplay();
     loadQuestion();
 }
+
+export { updateGameData, startGame, restartGame, checkAnswer, gameOver, resetGame };
