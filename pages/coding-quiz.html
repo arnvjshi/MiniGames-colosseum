@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coding Quiz</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap);
+        body {
+            font-family: 'Press Start 2P',cursive;
+            font-size: small;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+        }
+        .quiz-container {
+            width: 500px;
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .option {
+            background-color: #333;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #666;
+        }
+        #status {
+            margin: 10px 0;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: x-small;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="status">Score: 0 | Attempts: 0 | Time: 0s</div>
+        <div id="question" class="question"></div>
+        <div id="options" class="options"></div>
+        <div id="result"></div>
+    </div>
+
+    <script type="module" src="../mini_game_scripts/coding-quiz.js"></script>
+</body>
+</html>
