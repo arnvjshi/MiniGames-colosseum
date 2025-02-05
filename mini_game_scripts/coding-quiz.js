@@ -3,37 +3,108 @@ let gameScore = parseInt(localStorage.getItem('CodingQuiz')) || 0;
 
 const questions = [
     {
-        text: "What does CSS stand for?",
+        text: "Which of the following is the correct syntax for a for loop in C?",
         options: [
-            "Cascading Style Sheets",
-            "Computer Style System",
-            "Creative Style Selector",
-            "Coded Style Structure"
+            "for(i = 0; i < 10; i++) {}",
+            "for(i = 0, i < 10, i++) {}",
+            "for(i = 0; i < 10; i++)",
+            "for(i = 0 to 10) {}"
         ],
         correct: 0
     },
     {
-        text: "Which HTML tag is used to define an internal CSS?",
+        text: "What will be the output of the following code?\\n#include <stdio.h>\\nint main() {\\n    int x = 5;\\n    printf(\"%d\", x++);\\n    return 0;\\n}",
         options: [
-            "<script>",
-            "<css>",
-            "<style>",
-            "<link>"
+            "5",
+            "6",
+            "0",
+            "Compilation Error"
+        ],
+        correct: 0
+    },
+    {
+        text: "Which of the following is used for memory allocation in C?",
+        options: [
+            "malloc()",
+            "free()",
+            "calloc()",
+            "All of the above"
+        ],
+        correct: 3
+    },
+    {
+        text: "What is the default value of a variable declared as static?",
+        options: [
+            "Undefined",
+            "0",
+            "-1",
+            "NULL"
+        ],
+        correct: 1
+    },
+    {
+        text: "In C, the sizeof operator gives the size of:",
+        options: [
+            "A variable",
+            "A data type",
+            "A constant",
+            "All of the above"
+        ],
+        correct: 3
+    },
+    {
+        text: "Which of the following data types can store the largest range of integer values?",
+        options: [
+            "int",
+            "long",
+            "long long",
+            "float"
         ],
         correct: 2
     },
-    // Add more questions here to reach 50
     {
-        text: "What is the correct way to declare a JavaScript variable?",
+        text: "What is the value of x after the following code is executed?\\nint x = 10;\\nx = x++ + ++x;",
         options: [
-            "variable x = 5;",
-            "var x = 5;",
-            "x = 5;",
-            "let x = 5;"
+            "21",
+            "20",
+            "19",
+            "22"
+        ],
+        correct: 0
+    },
+    {
+        text: "Which operator is used to get the address of a variable in C?",
+        options: [
+            "*",
+            "&",
+            "@",
+            "#"
+        ],
+        correct: 1
+    },
+    {
+        text: "What will be the output of the following code?\\n#include <stdio.h>\\nint main() {\\n    int a = 10, b = 5;\\n    printf(\"%d\", a & b);\\n    return 0;\\n}",
+        options: [
+            "15",
+            "5",
+            "0",
+            "10"
+        ],
+        correct: 2
+    },
+    {
+        text: "Which of the following is correct to declare a function in C?",
+        options: [
+            "int func(void)",
+            "int func()",
+            "int func();",
+            "All of the above"
         ],
         correct: 3
     }
+    // Add more questions here following the same format
 ];
+
 
 let attempts = 0;
 let startTime, timerInterval;

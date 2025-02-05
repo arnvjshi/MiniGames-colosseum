@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: monospace;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            max-width: 550px;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .card.flipped {
+            background-color: #666;
+            font-size: 48px;
+            color: #fff;
+        }
+        .card.matched {
+            background-color: #0f0;
+            pointer-events: none;
+        }
+        #game-status {
+            position: absolute;
+            top: 20px;
+            color: #fff;
+            font-size: 24px;
+        }
+        #timer {
+            position: absolute;
+            top: 50px;
+            color: #fff;
+            font-size: 24px;
+        }
+        #congrats {
+            position: absolute;
+            top: 50%;
+            color: yellow;
+            font-size: 48px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-status">Moves: 0</div>
+    <div id="timer">Time: 0s</div>
+    <div id="congrats">Congratulations!</div>
+    <div class="game-container" id="game-board"></div>
+
+    <script type="module" src="../mini_game_scripts/memory-game.js"></script>
+</body>
+</html>

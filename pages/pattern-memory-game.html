@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8-Bit Pattern Memory Game</title>
+    <title>Pattern Memory Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
@@ -194,96 +194,9 @@
             <button class="color-button" onclick="makeGuess('yellow')" style="background-color: #ffff00;">YELLOW</button>
         </div>
         
-        <button class="start-button" onclick="startGame()">START</button>
+        <button class="start-button" onclick="startgame()">START</button>
     </div>
-
-    <script>
-        let sequence = [];
-        let playerSequence = [];
-        let score = 0;
-        let canClick = false;
-        let timerInterval;
-        let timeElapsed = 0;
-
-        function startGame() {
-            sequence = [];
-            playerSequence = [];
-            score = 0;
-            timeElapsed = 0;
-            document.getElementById('score').textContent = score;
-            document.getElementById('timer').textContent = '0';
-            document.getElementById('status').innerHTML = 'GET READY!<br>WATCH PATTERN';
-            
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeElapsed++;
-                document.getElementById('timer').textContent = timeElapsed;
-            }, 1000);
-            
-            generateSequence();
-        }
-
-        function generateSequence() {
-            const colors = ['red', 'blue', 'green', 'yellow'];
-            sequence.push(colors[Math.floor(Math.random() * colors.length)]);
-            canClick = false;
-            playSequence();
-        }
-
-        async function playSequence() {
-            document.getElementById('status').innerHTML = 'WATCH<br>CAREFULLY!';
-            await sleep(1000);
-            
-            for (let color of sequence) {
-                await highlightCard(color);
-                await sleep(500);
-            }
-            
-            document.getElementById('status').innerHTML = 'YOUR TURN!<br>REPEAT PATTERN';
-            canClick = true;
-            playerSequence = [];
-        }
-
-        function highlightCard(color) {
-            return new Promise(resolve => {
-                const card = document.querySelector(`[data-color="${color}"]`);
-                card.classList.add('highlight');
-                
-                setTimeout(() => {
-                    card.classList.remove('highlight');
-                    resolve();
-                }, 500);
-            });
-        }
-
-        function makeGuess(color) {
-            if (!canClick) return;
-            
-            highlightCard(color);
-            playerSequence.push(color);
-            
-            if (playerSequence[playerSequence.length - 1] !== sequence[playerSequence.length - 1]) {
-                gameOver();
-                return;
-            }
-            
-            if (playerSequence.length === sequence.length) {
-                score++;
-                document.getElementById('score').textContent = score;
-                document.getElementById('status').innerHTML = 'PERFECT!<br>NEXT LEVEL';
-                setTimeout(generateSequence, 1000);
-            }
-        }
-
-        function gameOver() {
-            clearInterval(timerInterval);
-            document.getElementById('status').innerHTML = `GAME OVER!<br>SCORE: ${score}<br>TIME: ${timeElapsed}s`;
-            canClick = false;
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-    </script>
 </body>
+<script type="module" src="../mini_game_scripts/pattern-memory-game.js"></script>
+
 </html>
