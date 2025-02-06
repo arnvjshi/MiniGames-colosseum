@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvel Clock Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+        }
+        
+        .clock {
+            position: relative;
+            width: 210px;
+            height: 210px;
+            border: 15px solid black;
+            border-radius: 50%;
+            transform: rotate(-90deg);
+        }
+        
+        .hand {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background-color: black;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 50%;
+            transition: transform 0.5s ease;
+        }
+        
+        .hour-hand {
+            background-color: red;
+            width: 40%;
+            height: 4px;
+        }
+        
+        .number {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            font-size: 1em;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            transform: translate(-50%, -50%) rotate(var(--rotate)) translate(85px) rotate(-90deg);
+        }
+
+        #question {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+
+        #time-display {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        #message {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: green;
+        }
+
+        #score-display {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Clock Quiz</h2>
+    <div id="question">Loading question...</div>
+
+    <div class="clock">
+        <div class="hand hour-hand" id="hour-hand"></div>
+        <div class="hand minute-hand" id="minute-hand"></div>
+        
+        <!-- Clock Numbers -->
+        <div class="number" style="transform: translate(-50%, -50%) rotate(0deg) translate(90px) rotate(90deg);">12</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(30deg) translate(90px) rotate(80deg);">1</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(60deg) translate(90px) rotate(80deg);">2</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(90deg) translate(90px) rotate(0deg);">3</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(120deg) translate(90px) rotate(-80deg);">4</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(150deg) translate(90px) rotate(-80deg);">5</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(180deg) translate(90px) rotate(-100deg);">6</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(210deg) translate(90px) rotate(-90deg);">7</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(240deg) translate(90px) rotate(-80deg);">8</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(270deg) translate(90px) rotate(180deg);">9</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(300deg) translate(90px) rotate(-250deg);">10</div>
+        <div class="number" style="transform: translate(-50%, -50%) rotate(330deg) translate(90px) rotate(-270deg);">11</div>
+    </div>
+
+    <div id="time-display">Time: 00:00</div>
+    <div id="message"></div>
+    <div id="score-display">Score: 0</div>
+
+    <script type="module" src="../mini_game_scripts/clock.js"></script>
+</body>
+</html>
