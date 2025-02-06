@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Press Start 2P', cursive;
+    }
+    body {
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+    .option {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 2px solid #4a5568;
+    }
+    .option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+      border-color: #68d391;
+    }
+    .correct {
+      background-color: #48bb78;
+      color: white;
+    }
+    .wrong {
+      background-color: #f56565;
+      color: white;
+    }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="max-w-4xl w-full">
+    <!-- Start Screen -->
+    <div id="startScreen" class="text-center">
+      <h1 class="text-4xl mb-8 text-green-400">Two Truths & One Lie</h1>
+      <h2 class="text-xl mb-8 text-purple-400">Marvel & Coding Edition</h2>
+      <button id="startButton" class="bg-green-600 text-white px-8 py-4 rounded hover:bg-green-700">
+        Start Game
+      </button>
+    </div>
+
+    <!-- Game Screen (Initially Hidden) -->
+    <div id="gameScreen" class="hidden">
+      <div class="flex justify-between mb-8">
+        <div class="text-green-400">Points: <span id="points">500</span></div>
+        <div class="text-yellow-400">Time: <span id="timer">30</span>s</div>
+        <div class="text-blue-400">Question: <span id="questionCounter">1</span>/10</div>
+      </div>
+
+      <div class="bg-gray-800 p-6 rounded-lg mb-8">
+        <h2 class="text-xl mb-6 text-center text-purple-400">Pick the LIE!</h2>
+        <div id="options" class="space-y-4">
+          <div class="option p-4 rounded bg-gray-700 text-sm"></div>
+          <div class="option p-4 rounded bg-gray-700 text-sm"></div>
+          <div class="option p-4 rounded bg-gray-700 text-sm"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Screen (Initially Hidden) -->
+    <div id="endScreen" class="text-center hidden">
+      <h2 class="text-4xl mb-8 text-purple-400">Game Over!</h2>
+      <p class="text-2xl mb-8 text-green-400">Final Score: <span id="finalScore">0</span></p>
+      <button id="playAgainButton" class="bg-green-600 text-white px-8 py-4 rounded hover:bg-green-700">
+        Play Again
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="../mini_game_scripts/two-truths-lie-game.js"></script>
+</body>
+</html>

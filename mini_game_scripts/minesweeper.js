@@ -11,7 +11,7 @@ let grid = [];
 let revealed = [];
 let flagged = [];
 let gameActive = true;
-let score = 1000;
+let score = 500;
 let timer = 0;
 let timerInterval;
 let flagsLeft = MINE_COUNT;
@@ -227,7 +227,7 @@ function createGrid() {
         if (gameActive) {
             timer++;
             document.getElementById('timer').textContent = timer;
-            score = Math.max(0, score - 1);
+            score = Math.max(0, score - 0.5);
             updateScore();
         }
     }, 1000);

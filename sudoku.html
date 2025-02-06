@@ -3,158 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudoku</title>
+    <title>Easy Sudoku Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Press Start 2P', cursive;
-            background-color: #000;
-            color: #fff;
+            user-select: none;
+            font-family: 'Press Start 2P';
             text-align: center;
+            background-color: black;
+            color: aliceblue;
         }
-        .sudoku-container {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(9, 1fr);
+            grid-template-columns: repeat(9, 40px);
             gap: 2px;
-            max-width: 360px;
             margin: 20px auto;
+            width: fit-content;
+            font-family: 'Press Start 2P';
         }
         .cell {
             width: 40px;
             height: 40px;
-            background-color: #333;
-            color: #fff;
-            font-size: 20px;
             text-align: center;
-            line-height: 40px;
-            border: 1px solid #555;
+            font-size: 18px;
+            border: 1px solid #000;
+            font-family: 'Press Start 2P';
         }
-        .cell input {
-            width: 100%;
-            height: 100%;
-            background: none;
-            border: none;
-            color: #fff;
-            text-align: center;
-            font-size: 20px;
+        .fixed {
+            background-color: #ddd;
         }
-        .button {
-            background-color: #555;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            margin: 10px;
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+            font-family: 'Press Start 2P';
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Sudoku</h1><p><h3>Doesn't work as intended yet >n<</h3></p>
-    <div class="sudoku-container" id="sudoku-container"></div>
-    <button class="button" onclick="giveHint()">Hint</button>
-    <button class="button" onclick="checkSolution()">Check Solution</button>
+    <h1>Sudoku Game</h1>
+    <div>Time: <span id="timer">0</span>s</div>
+    <div>Score: <span id="score" class="score">500</span></div>
+    <div id="sudoku-board" class="grid"></div>
+    <button onclick="checkSudoku()">Check Solution</button>
     <p id="message"></p>
+    
     <script>
-        const easySudoku = [
-            // Add multiple easy Sudoku puzzles here
-            [
-                [5, 3, 0, 0, 7, 0, 0, 0, 0],
-                [6, 0, 0, 1, 9, 5, 0, 0, 0],
-                [0, 9, 8, 0, 0, 0, 0, 6, 0],
-                [8, 0, 0, 0, 6, 0, 0, 0, 3],
-                [4, 0, 0, 8, 0, 3, 0, 0, 1],
-                [7, 0, 0, 0, 2, 0, 0, 0, 6],
-                [0, 6, 0, 0, 0, 0, 2, 8, 0],
-                [0, 0, 0, 4, 1, 9, 0, 0, 5],
-                [0, 0, 0, 0, 8, 0, 0, 7, 9]
-            ],
-            // Add more puzzles here
+        let score = 500;
+        let timer = 0;
+        let timerInterval;
+        const board = [
+            [5, 3, '', '', 7, '', '', '', ''],
+            [6, '', '', 1, 9, 5, '', '', ''],
+            ['', 9, 8, '', '', '', '', 6, ''],
+            [8, '', '', '', 6, '', '', '', 3],
+            [4, '', '', 8, '', 3, '', '', 1],
+            [7, '', '', '', 2, '', '', '', 6],
+            ['', 6, '', '', '', '', 2, 8, ''],
+            ['', '', '', 4, 1, 9, '', '', 5],
+            ['', '', '', '', 8, '', '', 7, 9]
         ];
-
+        
         const solution = [
-            // Corresponding solutions for the puzzles
-            [
-                [5, 3, 4, 6, 7, 8, 9, 1, 2],
-                [6, 7, 2, 1, 9, 5, 3, 4, 8],
-                [1, 9, 8, 3, 4, 2, 5, 6, 7],
-                [8, 5, 9, 7, 6, 1, 4, 2, 3],
-                [4, 2, 6, 8, 5, 3, 7, 9, 1],
-                [7, 1, 3, 9, 2, 4, 8, 5, 6],
-                [9, 6, 1, 5, 3, 7, 2, 8, 4],
-                [2, 8, 7, 4, 1, 9, 6, 3, 5],
-                [3, 4, 5, 2, 8, 6, 1, 7, 9]
-            ],
-            // Add more solutions here
+            [5, 3, 4, 6, 7, 8, 9, 1, 2],
+            [6, 7, 2, 1, 9, 5, 3, 4, 8],
+            [1, 9, 8, 3, 4, 2, 5, 6, 7],
+            [8, 5, 9, 7, 6, 1, 4, 2, 3],
+            [4, 2, 6, 8, 5, 3, 7, 9, 1],
+            [7, 1, 3, 9, 2, 4, 8, 5, 6],
+            [9, 6, 1, 5, 3, 7, 2, 8, 4],
+            [2, 8, 7, 4, 1, 9, 6, 3, 5],
+            [3, 4, 5, 2, 8, 6, 1, 7, 9]
         ];
+        
+        timerInterval = setInterval(() => {
+            if (gameActive) {
+                timer++;
+                document.getElementById('timer').textContent = timer;
+                score = Math.max(0, score - 0.5);
+                updateScore();
+            }
+        }, 1000);
 
-        let currentPuzzle = [];
-        let currentSolution = [];
-        let score = 100;
-
-        function getRandomPuzzle() {
-            const index = Math.floor(Math.random() * easySudoku.length);
-            currentPuzzle = JSON.parse(JSON.stringify(easySudoku[index]));
-            currentSolution = solution[index];
-        }
-
-        function createSudokuGrid() {
-            const container = document.getElementById('sudoku-container');
-            container.innerHTML = '';
+        function createBoard() {
+            const boardElement = document.getElementById("sudoku-board");
+            boardElement.innerHTML = "";
+            
             for (let i = 0; i < 9; i++) {
                 for (let j = 0; j < 9; j++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    if (currentPuzzle[i][j] !== 0) {
-                        cell.innerText = currentPuzzle[i][j];
+                    const cell = document.createElement("input");
+                    cell.type = "text";
+                    cell.maxLength = 1;
+                    cell.classList.add("cell");
+                    
+                    if (board[i][j] !== '') {
+                        cell.value = board[i][j];
+                        cell.readOnly = true;
+                        cell.classList.add("fixed");
                     } else {
-                        const input = document.createElement('input');
-                        input.type = 'number';
-                        input.min = 1;
-                        input.max = 9;
-                        cell.appendChild(input);
+                        cell.dataset.row = i;
+                        cell.dataset.col = j;
+                        cell.addEventListener("input", validateInput);
                     }
-                    container.appendChild(cell);
+                    boardElement.appendChild(cell);
                 }
             }
         }
-
-        function giveHint() {
-            let emptyCells = [];
-            const cells = document.querySelectorAll('.cell input');
-            cells.forEach((cell, index) => {
-                if (cell.value === '' || cell.value === null) {
-                    emptyCells.push(index);
-                }
-            });
-            if (emptyCells.length > 0) {
-                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                const row = Math.floor(randomIndex / 9);
-                const col = randomIndex % 9;
-                cells[randomIndex].value = currentSolution[row][col];
-                score -= 10;
-                document.getElementById('message').innerText = `Hint used! Score: ${score}`;
+        
+        function validateInput(event) {
+            const value = event.target.value;
+            if (!/^[1-9]$/.test(value)) {
+                event.target.value = "";
             }
         }
-
-        function checkSolution() {
-            const cells = document.querySelectorAll('.cell input');
-            let isCorrect = true;
-            cells.forEach((cell, index) => {
-                const row = Math.floor(index / 9);
-                const col = index % 9;
-                if (cell.value != currentSolution[row][col]) {
-                    isCorrect = false;
+        
+        function checkSudoku() {
+            const cells = document.querySelectorAll(".cell");
+            let correct = true;
+            
+            cells.forEach(cell => {
+                if (!cell.classList.contains("fixed")) {
+                    const row = cell.dataset.row;
+                    const col = cell.dataset.col;
+                    if (cell.value != solution[row][col]) {
+                        correct = false;
+                    }
                 }
             });
-            if (isCorrect) {
-                document.getElementById('message').innerText = `Congratulations! You solved the puzzle! Final Score: ${score}`;
-            } else {
-                document.getElementById('message').innerText = 'Incorrect solution. Keep trying!';
-            }
+            
+            document.getElementById("message").textContent = correct ? "Correct Solution! 🎉" : "Try Again! ❌";
         }
-
-        getRandomPuzzle();
-        createSudokuGrid();
+        
+        createBoard();
     </script>
 </body>
 </html>

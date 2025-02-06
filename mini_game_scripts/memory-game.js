@@ -94,7 +94,6 @@ let GameScore=0;
                 }
             }
 
-            createGameBoard();
         });
-
-        export{GameScore,updateGameData,shuffleArray,createGameBoard,resetGame,startTimer,updateTimer,handleCardClick};
+        window.addEventListener('load', createGameBoard());
+        export{GameScore,updateGameData};
