@@ -1,123 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Search Game</title>
- 
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
-<style>
-    body {
-        font-family: 'Press Start 2P', sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #1a1a1a;
-        color: white;
-        flex-direction: column;
-        user-select: none;
-      }
-      
-      .card {
-        text-align: center;
-        background-color: #282c34;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      }
-      
-      .card h1 {
-        font-size: 2rem;
-        margin-bottom: 10px;
-      }
-      
-      .card ul {
-        text-align: left;
-        margin-top: 10px;
-        list-style: none;
-        padding: 0;
-      }
-      
-      .card ul li {
-        font-size: 1rem;
-        margin: 5px 0;
-      }
-      
-      .hidden {
-        display: none;
-      }
-      
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(10, 40px);
-        gap: 2px;
-        margin-top: 20px;
-      }
-      
-      .grid div {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #444;
-        font-size: 1.2rem;
-        text-transform: uppercase;
-        background-color: #333;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      
-      .grid div.selected {
-        background-color: #555;
-      }
-      
-      .grid div.correct {
-        background-color: #28a745;
-      }
-      
-      .grid div.wrong {
-        background-color: #dc3545;
-      }
-      
-      .win-message {
-        margin-top: 20px;
-        font-size: 1.5rem;
-        color: #28a745;
-        text-align: center;
-      }
-      
-</style>
-<body>
-  <div id="instructions" class="card">
-    <h1>Instructions</h1>
-    <p>Remember these substitution rules to solve the word scratch:</p>
-    <ul>
-      <li>R → E</li>
-      <li>F → I</li>
-      <li>H → K</li>
-      <li>L → Q</li>
-      <li>N → T</li>
-    </ul>
-    <p>Game starts in <span id="timer">10</span> seconds</p>
-  </div>
-
-  <div id="game-container" class="hidden">
-    <h2>Find Marvel Characters</h2>
-    <div id="word-grid" class="grid"></div>
-    <div id="win-message" class="win-message"></div>
-  </div>
-
-  <!-- <script src="script.js"></script> -->
-   
-</body>
-
-<script>
+function updateGameData(GameScore,score) {
+    localStorage.setItem('WordScratch', score);
+}
+    // --- Game Variables ---
     const wordsPool = ["ironman", "thor", "hulk", "spiderman", "loki", "wanda", "vision", "hawkeye", "thanos", "blackwidow"];
     let words = [];
     let foundWords = new Set();
@@ -132,13 +16,32 @@
       n: "t"
     };
     
-    const countdownCard = document.getElementById('countdown-card');
-    const gameContainer = document.getElementById('game-container');
+    // DOM Elements
     const instructions = document.getElementById('instructions');
+    const gameContainer = document.getElementById('game-container');
     const timer = document.getElementById('timer');
     const wordGrid = document.getElementById('word-grid');
-    let countdown = 15;
+    const winMessageElement = document.getElementById('win-message');
+    const scoreDisplay = document.getElementById('score');
+    const gameTimerDisplay = document.getElementById('game-timer');
     
+    // Countdown variables
+    let countdown = 10;
+    let startTime;
+    let previousFoundTime; // For relative scoring
+    let totalScore = 0;
+    
+    // Game timer variables
+    const gameDuration =  900; // 5 minutes in seconds
+    let gameTimeLeft = gameDuration;
+    let gameTimerInterval;
+    
+    // Scoring parameters
+    const maxScoreTotal = 1000;
+    const maxTimeSeconds = 900; 
+    const maxWordScore = maxScoreTotal / 5; 
+    
+    // Countdown before game starts
     const interval = setInterval(() => {
       timer.textContent = countdown;
       if (countdown === 0) {
@@ -146,9 +49,37 @@
         instructions.classList.add('hidden');
         gameContainer.classList.remove('hidden');
         setupGame();
+        // Set the start time and initialize previousFoundTime
+        startTime = Date.now();
+        previousFoundTime = startTime;
+        // Start the game timer
+        startGameTimer();
       }
       countdown--; 
     }, 1000);
+    
+    function startGameTimer() {
+      gameTimerInterval = setInterval(() => {
+        gameTimeLeft--;
+        const minutes = Math.floor(gameTimeLeft / 60);
+        const seconds = gameTimeLeft % 60;
+        gameTimerDisplay.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (gameTimeLeft <= 0) {
+          clearInterval(gameTimerInterval);
+          endGame();
+        }
+      }, 1000);
+    }
+    
+    function endGame() {
+      winMessageElement.textContent = `Game Over! Final Score: ${totalScore}`;
+      winMessageElement.style.color = '#dc3545';
+      // Disable further selections
+      wordGrid.removeEventListener('mousedown', startSelection);
+      wordGrid.removeEventListener('mouseover', extendSelection);
+      wordGrid.removeEventListener('mouseup', checkSelection);
+    }
     
     function getRandomWords() {
       return wordsPool.sort(() => 0.5 - Math.random()).slice(0, 5);
@@ -164,9 +95,9 @@
     }
     
     function logWordsInGrid() {
-      //console.log('Words present in the grid:');
+      // For debugging: log the substituted words
       words.forEach(word => {
-       // console.log(applySubstitution(word));
+        console.log(applySubstitution(word));
       });
     }
     
@@ -194,7 +125,6 @@
         }
       });
     
-     
       for (let r = 0; r < 10; r++) {
         for (let c = 0; c < 10; c++) {
           if (!grid[r][c]) {
@@ -244,7 +174,6 @@
       const cell = document.querySelector(`[data-row='${row}'][data-col='${col}']`);
       selectedCells.push(cell);
       cell.classList.add('selected');
-     // console.log('Start selection:', selectedCells.map(c => c.textContent).join(''));
     }
     
     function extendSelection(row, col) {
@@ -258,7 +187,6 @@
           if (!selectedCells.includes(cell)) {
             selectedCells.push(cell);
             cell.classList.add('selected');
-           // console.log('Extend selection:', selectedCells.map(c => c.textContent).join(''));
           }
         }
       }
@@ -269,52 +197,70 @@
       const selectedWord = selectedCells.map(cell => cell.textContent.toLowerCase()).join('');
       const originalWords = words.map(word => applySubstitution(word));
     
-      //console.log('Checking selection:', selectedWord);
-    
-      if (originalWords.includes(selectedWord)) {
+      if (originalWords.includes(selectedWord) && !foundWords.has(selectedWord)) {
+        // Mark as correct
         selectedCells.forEach(cell => {
           cell.classList.add('correct');
           cell.classList.remove('selected');
         });
         foundWords.add(selectedWord);
-       // console.log('Correct word found:', selectedWord);
     
-       
+        // Calculate relative time gap for scoring
+        const currentTime = Date.now();
+        const deltaSeconds = (currentTime - previousFoundTime) / 1000;
+        previousFoundTime = currentTime; // update for next word
+    
+        // Calculate the word's score using a linear decay function
+        const wordScore = Math.max(0, Math.floor(maxWordScore * (1 - deltaSeconds / maxTimeSeconds)));
+        totalScore += wordScore;
+        updateGameData('WordScratch',totalScore);
+        updateScoreDisplay();
+    
+        console.log(`Found "${selectedWord}" after ${Math.floor(deltaSeconds)}s gap for ${wordScore} points`);
+    
         if (foundWords.size === words.length) {
           declareWin();
         }
       } else {
+        // Wrong selection: indicate error and then clear after 1 second
         selectedCells.forEach(cell => {
           cell.classList.add('wrong');
           cell.classList.remove('selected');
         });
     
-        //console.log('Wrong selection, will revert in 1 second');
-    
         setTimeout(() => {
-         // console.log('Reverting wrong class');
-          if (selectedCells.length === 0) {
-            //console.log('selectedCells is empty');
-          }
           selectedCells.forEach(cell => {
-            cell.classList.remove('wrong'); 
-           // console.log('removed');
-            cell.classList.remove('selected'); 
+            cell.classList.remove('wrong');
+            cell.classList.remove('selected');
           });
-          clearSelection(); 
-        }, 1000); 
+          clearSelection();
+        }, 1000);
       }
     }
     
     function declareWin() {
       console.log('Congratulations! You found all the words!');
-      const winMessageElement = document.getElementById('win-message');
-      winMessageElement.textContent = 'Congratulations! You found all the words!';
+      winMessageElement.textContent = 'Congratulations! You found all the words! Final Score: ' + totalScore;
+      clearInterval(gameTimerInterval);
     }
     
     function clearSelection() {
       selectedCells = [];
     }
     
-</script>
-</html>
+    function updateScoreDisplay() {
+      scoreDisplay.textContent = 'Score: ' + totalScore;
+    }
+
+    export{};
+    {
+        startGameTimer,
+        endGame,
+        setupGame,
+        startSelection,
+        extendSelection,
+        checkSelection,
+        declareWin,
+        clearSelection,
+        updateScoreDisplay
+    }

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Search Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<style>
+  body {
+    font-family: 'Press Start 2P', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a1a;
+    color: white;
+    flex-direction: column;
+    user-select: none;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+    background-color: #282c34;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .card ul {
+    text-align: left;
+    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+  }
+  .card ul li {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  .hidden {
+    display: none;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    margin-top: 20px;
+  }
+  .grid div {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #444;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .grid div.selected {
+    background-color: #555;
+  }
+  
+  .grid div.correct {
+    background-color: #28a745;
+  }
+  
+  .grid div.wrong {
+    background-color: #dc3545;
+  }
+  
+  .win-message {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #28a745;
+    text-align: center;
+  }
+  
+  #score {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  #game-timer {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+</style>
+<body>
+  <div id="instructions" class="card">
+    <h1>Instructions</h1>
+    <p>Remember these substitution rules to solve the word search:</p>
+    <ul>
+      <li>R → E</li>
+      <li>F → I</li>
+      <li>H → K</li>
+      <li>L → Q</li>
+      <li>N → T</li>
+    </ul>
+    <p>All possible words:</p>
+    <ul id="word-list">
+      <li>ironman</li>
+      <li>thor</li>
+      <li>hulk</li>
+      <li>spiderman</li>
+      <li>loki</li>
+      <li>wanda</li>
+      <li>vision</li>
+      <li>hawkeye</li>
+      <li>thanos</li>
+      <li>blackwidow</li>
+    </ul>
+    <p>Game starts in <span id="timer">10</span> seconds</p>
+  </div>
+  <div id="game-container" class="hidden card">
+    <h2>Find Marvel Characters</h2>
+    <!-- Score display -->
+    <div id="score">Score: 0</div>
+    <!-- Game timer display -->
+    <div id="game-timer">Time Left: 5:00</div>
+    <div id="word-grid" class="grid"></div>
+    <div id="win-message" class="win-message"></div>
+  </div>
+  <script type="module" src="../mini_game_scripts/wordscratch.js"></script>
+</body>
+</html>

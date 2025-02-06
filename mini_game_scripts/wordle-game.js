@@ -1,3 +1,7 @@
+function updateGameData(GameScore,score) {
+    localStorage.setItem('WordleGame', score);
+}
+
 const words = [
     'BEACH', 'CRANE', 'FLAME', 'GHOST', 'HEART',
     'KNIFE', 'LUNAR', 'MAGIC', 'NIGHT', 'OCEAN',
@@ -167,6 +171,7 @@ function resetKeyboard() {
 function updateStats() {
     document.getElementById('wordsSolved').textContent = gameState.wordsSolved;
     document.getElementById('score').textContent = gameState.score;
+    updateGameData('Wordle',score);
     document.getElementById('wordsAttempted').textContent = gameState.wordsAttempted;
     document.getElementById('triesLeft').textContent = gameState.triesLeft;
 }

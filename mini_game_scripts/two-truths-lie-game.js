@@ -1,3 +1,7 @@
+function updateGameData(GameScore,score) {
+    localStorage.setItem('TwoTOneL', score);
+}
+
 const questions = [
     {
       options: [
@@ -271,9 +275,11 @@ const questions = [
   
         if (selectedIndex === question.lieIndex) {
           points += 50;
+          updateGameData('TwoTOneL',points);
           optionsContainer.children[selectedIndex].classList.add('correct');
         } else {
           points -= 15;
+          updateGameData('TwoTOneL',points);
           optionsContainer.children[selectedIndex].classList.add('wrong');
           optionsContainer.children[question.lieIndex].classList.add('correct');
         }
@@ -286,6 +292,7 @@ const questions = [
   
       function updateUI() {
         document.getElementById('points').textContent = points;
+        updateGameData('TwoTOneL',points);
         document.getElementById('timer').textContent = timeLeft;
         document.getElementById('questionCounter').textContent = currentQuestionIndex + 1;
       }

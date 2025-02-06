@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marvel Quiz Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            user-select: none;
+
+        }
+
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #e62429;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            background: #3d3d3d;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .hints-section {
+            background: #3d3d3d;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #4d4d4d;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .hint.visible {
+            opacity: 1;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #4d4d4d;
+            color: white;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #e62429;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #ff3333;
+        }
+
+        button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+        .hidden-element {
+            visibility: hidden;
+          }
+          
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success { background-color: #28a745; }
+        .error { background-color: #dc3545; }
+        .congratulations { background-color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Guess the Marvel Character</h1>
+        
+        <div class="score-display">
+            <div>Score: <span id="score">0</span></div>
+            <div>Hints Used: <span id="hints-used">0</span></div>
+        </div>
+        
+        <div class="hints-section">
+            <div id="hints-container"></div>
+            <button id="hint-button">Get Hint (-20 points for subsequent hints)</button>
+        </div>
+        
+        <div class="input-section">
+            <input type="text" id="guess-input" placeholder="Enter character name...">
+            <button id="guess-button">Guess</button>
+        </div>
+        
+        <div id="message" class="message"></div>
+        <button id="next-button" style="display: none; width: 100%;">Next Character</button>
+        <div id="final-message" class="message" style="display: none;"></div>
+    </div>
+
+    <script type="module" src="../mini_game_scripts/guess.js"></script>
+</body>
+</html>

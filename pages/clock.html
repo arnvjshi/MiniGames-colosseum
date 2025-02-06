@@ -30,7 +30,7 @@
         .hand {
             position: absolute;
             width: 50%;
-            height: 2px;
+            height: 4px;
             background-color: black;
             top: 50%;
             left: 50%;
@@ -41,7 +41,7 @@
         .hour-hand {
             background-color: red;
             width: 40%;
-            height: 4px;
+            height: 6px;
         }
         
         .number {
@@ -76,6 +76,29 @@
             font-size: 1.5em;
             margin-top: 10px;
         }
+        #submit-answer {
+            background-color: #ff5733;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #submit-answer:hover {
+            background-color: #c70039;
+            transform: scale(1.05);
+        }
+
+        #submit-answer:active {
+            background-color: #900c3f;
+            transform: scale(0.95);
+        }
+
 
     </style>
 </head>
@@ -105,7 +128,8 @@
     <div id="time-display">Time: 00:00</div>
     <div id="message"></div>
     <div id="score-display">Score: 0</div>
+    <button id="submit-answer">Submit Answer</button>
 
-    <script type="module" src="../mini_game_scripts/clock.js"></script>
+    <script type="module" src="../mini_game_scripts/clock.js"> </script>
 </body>
 </html>

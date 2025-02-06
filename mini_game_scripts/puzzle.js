@@ -1,4 +1,8 @@
 
+function updateGameData(GameScore,score) {
+    localStorage.setItem('Puzzle', score);
+}
+
 const puzzleGrid = document.getElementById("puzzleGrid");
 const winMessage = document.getElementById("winMessage");
 const moveCounter = document.getElementById("moveCounter");
@@ -23,7 +27,7 @@ function createTiles() {
     if (i < tileCount - 1) {
       const x = (i % gridSize) * -100; 
       const y = Math.floor(i / gridSize) * -100; 
-      tile.style.backgroundImage = `url('../ironman.jpeg')`;
+      tile.style.backgroundImage = `url('../mini_game_scripts/ironman.jpeg')`;
       tile.style.backgroundPosition = `${x}px ${y}px`;
     } else {
       tile.classList.add("empty");
@@ -58,6 +62,7 @@ function tileClickHandler(index) {
     moveCounter.innerText = `Moves: ${moves}`;
     score -= 2;  // Deduct score only after a valid move
     updateScore();  // Update the score display
+    updateGameData('Puzzle',score);
   }
 }
 

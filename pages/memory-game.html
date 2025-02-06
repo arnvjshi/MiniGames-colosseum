@@ -6,17 +6,25 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             background-color: #000;
             font-family: monospace;
+            user-select: none;
+        }
+        .game-info {
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px; /* Adds spacing below the score & moves */
         }
         .game-container {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            max-width: 550px;
+            grid-template-columns: repeat(6, 1fr);
+            
+            max-width: 660px;
         }
         .card {
             width: 100px;
@@ -27,7 +35,8 @@
             align-items: center;
             font-size: 0;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s, background-color 0.3s;
+            border: 2px solid #fff;
         }
         .card.flipped {
             background-color: #666;
@@ -38,33 +47,22 @@
             background-color: #0f0;
             pointer-events: none;
         }
-        #game-status {
-            position: absolute;
-            top: 20px;
-            color: #fff;
-            font-size: 24px;
-        }
-        #timer {
-            position: absolute;
-            top: 50px;
-            color: #fff;
-            font-size: 24px;
-        }
         #congrats {
-            position: absolute;
-            top: 50%;
             color: yellow;
-            font-size: 48px;
+            font-size: 32px;
+            margin-top: 20px;
             display: none;
         }
     </style>
 </head>
 <body>
-    <div id="game-status">Moves: 0</div>
-    <div id="timer">Time: 0s</div>
-    <div id="congrats">Congratulations!</div>
+    <div class="game-info">
+        <div id="game-status">Moves: 0</div>
+        <div id="score">Score: 0</div>
+    </div>
     <div class="game-container" id="game-board"></div>
+    <div id="congrats">Congratulations! Your Score: <span id="final-score"></span></div>
 
-    <script type="module" src="../mini_game_scripts/memory-game.js"></script>
+    <script></script>
 </body>
 </html>
