@@ -89,5 +89,3 @@ let sequence = [];
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        
-        export{startgame,makeGuess,updateGameData,gameOver,generateSequence,playSequence,highlightCard,sleep};
